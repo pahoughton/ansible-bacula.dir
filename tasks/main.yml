@@ -1,0 +1,8 @@
+---
+# 2015-06-18 (cc) <paul4hough@gmail.com>
+#
+- yum: name=bacula-director
+- service: name=bacula-dir state=stopped
+- template: src=bacula-dir.conf.jinja2 dest=/etc/bacula/bacula-dir.conf backup=yes
+- template: src=bacula-dir-client.conf.jinja2 dest=/etc/bacula/bacula-dir-client.conf backup=yes
+- service: name=bacula-dir state=started

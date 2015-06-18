@@ -1,0 +1,64 @@
+# 2015-06-18 (cc) <paul4hough@gmail.com>
+#
+{% for client in backup_clients %}
+Client {
+  Name = {{ client.addr }}-fd
+  Address = {{ client.addr }}
+  FDPort = {{ bacula_fd_port }}
+  Catalog = MyCatalog
+  Password = "{{ backup_client_password }}"        # password for FileDaemon
+  File Retention = "{{ client.fileret }}"          # 30 days
+  Job Retention = "{{ client.jobret }}"            # six months
+  AutoPrune = yes                     # Prune expired Jobs/Files
+}
+
+FileSet {
+  Name = "{{ client.addr }}-fset"
+  Include {
+    Options {
+      signature = MD5
+    }
+#
+#  Put your list of files here, preceded by 'File =', one per line
+#    or include an external list with:
+#
+#    File = <file-name
+#
+#  Note: / backs up everything on the root partition.
+#    if you have other partitions such as /usr or /home
+#    you will probably want to add them too.
+#
+#  By default this is defined to point to the Bacula binary
+#    directory to give a reasonable FileSet to backup to
+#    disk storage during initial testing.
+#
+
+  {% for dir in client.incdirs.split() %}
+    File = "{{ dir }}"
+  {% endfor %}
+
+  }
+
+#
+# If you backup the root directory, the following two excluded
+#   files can be useful
+#
+  Exclude {
+  {% for dir in client.excdirs %}
+    File = "{{ dir }}"
+  {% endfor %}
+    File = /tmp
+    File = /proc
+    File = /.journal
+    File = /.fsck
+  }
+}
+
+Job {
+  Name = "{{ client.addr }}-job"
+  Client = "{{ client.addr }}-fd"
+  FileSet = "{{ client.addr }}-fset"
+  JobDefs = "DefaultJob"
+}
+
+{% endfor %}

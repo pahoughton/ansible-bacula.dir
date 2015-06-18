@@ -1,0 +1,6 @@
+---
+# 2015-06-15 (cc) <paul4hough@gmail.com>
+#
+- hosts: unittest
+  roles:
+    - pahoughton.bacula.dir

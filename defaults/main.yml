@@ -1,0 +1,46 @@
+---
+# 2015-06-18 (cc) <paul4hough@gmail.com>
+#
+
+backup_storage_address: tbacdir
+backup_director_password: b@culaDir
+
+backup_storage_address: tbacsd
+backup_storage_password: b@culaSd
+
+backup_client_password: b@culaFd
+bacula_client_file_ret: 30 days
+bacula_client_job_ret: 6 months
+
+backup_clients:
+  - { addr: "tbacfd01",
+      b4scr: "/bin/true",
+      afscr: "/bin/true",
+      incdirs: "/home /srv",
+      fileret: "{{ bacula_client_file_ret }}",
+      jobret: "{{ bacula_client_job_ret }}",
+      }
+  - { addr: "tbacfd02",
+      b4scr: "/bin/true",
+      afscr: "/bin/true",
+      incdirs: "/etc /var/log",
+      fileret: "{{ bacula_client_file_ret }}",
+      jobret: "{{ bacula_client_job_ret }}",
+      }
+
+# see bacula director documentation and ../templates/bacula-dir.conf.jinja2
+#
+
+bacula_dir_name: bacula-dir
+bacula_dir_port: 9101
+bacula_dir_working_dir: /var/spool/bacula
+bacula_dir_password: "{{ backup_director_password }}"
+
+
+bacula_sd_name: bacstg
+bacula_sd_password: "{{ backup_storage_password }}"
+bacula_sd_address: "{{ backup_storage_addr }}"
+bacula_sd_port: 9103
+
+bacula_fd_port: 9102
+bacula_fd_password: "{{ backup_client_password }}"
