@@ -56,15 +56,16 @@ while [ -z "$vgip" ]; do
     DoD grep $guestname /var/lib/libvirt/dnsmasq/default.leases > /dev/null
 
     # config node with ansible
-    cat <<EOF  > unittest.inv
-[unittest]
-$vgip          ansible_ssh_private_key_file=`pwd`/r7t_jenkins.id
-EOF
     break;
   fi
   let tcnt=tcnt+1
   if [ $tcnt -gt 5 ] ; then exit 1; fi
 done
+
+cat <<EOF  > unittest.inv
+[unittest]
+$vgip          ansible_ssh_private_key_file=`pwd`/r7t_jenkins.id
+EOF
 
 aparg=
 if [ -n "$DEBUG" ] ; then aparg='-v' ; fi
