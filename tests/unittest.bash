@@ -31,7 +31,6 @@ if [ -z "$REUSE" ] ; then
   echo $imgfn
   DoD cp "$baseimg" "$imgfn"
   DoD chmod +w "$imgfn"
-  DoD chmod 600 r7t_jenkins.id
 
   sed  \
     -e "s~%imgfn%~$imgfn~g" \
@@ -41,7 +40,8 @@ if [ -z "$REUSE" ] ; then
 fi
 
 DoD virsh create r7test.xml
-  sleep 10
+DoD sleep 10
+DoD chmod 600 r7t_jenkins.id
 
 vgip=`cat $testname.vgip`
 while [ -z "$vgip" ]; do

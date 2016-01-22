@@ -2,7 +2,6 @@
 # 2015-06-18 (cc) <paul4hough@gmail.com>
 #
 
-backup_storage_address: tbacdir
 backup_director_password: b@culaDir
 
 backup_storage_address: tbacsd
@@ -17,6 +16,7 @@ backup_clients:
       b4scr: "/bin/true",
       afscr: "/bin/true",
       incdirs: "/home /srv",
+      excdirs: "/tmp",
       fileret: "{{ bacula_client_file_ret }}",
       jobret: "{{ bacula_client_job_ret }}",
       }
@@ -24,6 +24,7 @@ backup_clients:
       b4scr: "/bin/true",
       afscr: "/bin/true",
       incdirs: "/etc /var/log",
+      excdirs: "/tmp",
       fileret: "{{ bacula_client_file_ret }}",
       jobret: "{{ bacula_client_job_ret }}",
       }
@@ -39,7 +40,7 @@ bacula_dir_password: "{{ backup_director_password }}"
 
 bacula_sd_name: bacstg
 bacula_sd_password: "{{ backup_storage_password }}"
-bacula_sd_address: "{{ backup_storage_addr }}"
+bacula_sd_address: "{{ backup_storage_address }}"
 bacula_sd_port: 9103
 
 bacula_fd_port: 9102
